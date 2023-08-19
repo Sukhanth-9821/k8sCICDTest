@@ -15,16 +15,18 @@ pipeline{
         stage ("Terraform Init"){
             steps{
                script{
-                   dir("EKSTerraform")
+                   dir("EKSTerraform"){
                    sh "terraform init"
+                   }
                }        
             }
         }
         stage ("Terraform Plan"){
             steps{
                script{
-                   dir("EKSTerraform")
+                   dir("EKSTerraform"){
                    sh "terraform plan"
+                   }
                }        
             }
         }
@@ -36,8 +38,9 @@ pipeline{
             }
             steps {
                 script{
-                   dir("EKSTerraform")
+                   dir("EKSTerraform"){
                    sh "terraform apply --auto-approve"
+                   }
                }  
             }
         }
@@ -58,8 +61,9 @@ pipeline{
             }
             steps {
                 script{
-                   dir("EKSTerraform")
+                   dir("EKSTerraform"){
                    sh "terraform detroy --auto-approve"
+                   }
                }  
             }
         }
