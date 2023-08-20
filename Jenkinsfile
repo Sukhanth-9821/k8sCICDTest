@@ -47,9 +47,11 @@ pipeline{
         stage("Deploy to EKS"){
             steps{
                 script{
+                    dir("EKSApps"){
                     sh "aws eks update-kubeconfig --name suki-tf-cluster2"
                     sh "kubectl apply -f ${DEPLOYMENT_YAML_FILE}"
                     sh "kubectl apply -f ${SERVICE_YAML_FILE}"
+                    }
                 }
             }
         }
