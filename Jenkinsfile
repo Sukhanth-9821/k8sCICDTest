@@ -21,15 +21,15 @@ pipeline{
                }        
             }
         }
-        stage ("Terraform Plan"){
-            steps{
-               script{
-                   dir("EKSTerraform"){
-                   sh "terraform plan"
-                   }
-               }        
-            }
-        }
+        // stage ("Terraform Plan"){
+        //     steps{
+        //        script{
+        //            dir("EKSTerraform"){
+        //            sh "terraform plan"
+        //            }
+        //        }        
+        //     }
+        // }
         stage('Approval') {
             input {
                 message 'Do you want to proceed with the next stage?'
