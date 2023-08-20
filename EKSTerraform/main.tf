@@ -1,36 +1,26 @@
+module "eks" {
+    source  = "terraform-aws-modules/eks/aws"
+    version = "~> 19.0"
+    cluster_name = "suki-tf-cluster"
+    cluster_version = "1.24"
 
-data "aws_vpc" "vpcfetch" {
+    cluster_endpoint_public_access  = true
+
+    vpc_id = module.myapp-vpc.vpc_id
+    subnet_ids = module.myapp-vpc.private_subnets
+
     tags = {
-        Name = "sukiVPC"
+        environment = "development"
+        application = "myapp"
     }
-}
 
-data "aws_subnet" "subnet"{
-    tags = {
-    Name = "publicSubnet"
-  }
-}
+    eks_managed_node_groups = {
+        dev = {
+            min_size = 1
+            max_size = 3
+            desired_size = 1
 
-data "aws_subnet" "subnet2"{
-    tags = {
-    Name = "publicSubnet2"
-  }
-}
-
-data "aws_iam_role" "sukieksrole" {
-  name = "Suki-EksClusterRole"
-}
-
-
-resource "aws_eks_cluster" "example" {
-  name     = "suki-tf-cluster"
-  role_arn = data.aws_iam_role.sukieksrole.arn
-
-  vpc_config {
-    subnet_ids = [data.aws_subnet.subnet.id,data.aws_subnet.subnet2.id]
-  }
-
-  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
-  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
- 
+            instance_types = ["t2.micro"]
+        }
+    }
 }
