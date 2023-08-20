@@ -1,3 +1,23 @@
+
+data "aws_vpc" "vpcfetch" {
+    tags = {
+        Name = "sukiVPC"
+    }
+}
+
+data "aws_subnet" "subnet"{
+    tags = {
+    Name = "publicSubnet"
+  }
+}
+
+data "aws_subnet" "subnet2"{
+    tags = {
+    Name = "publicSubnet2"
+  }
+}
+
+
 module "eks" {
     source  = "terraform-aws-modules/eks/aws"
     version = "~> 19.0"
@@ -6,8 +26,8 @@ module "eks" {
 
     cluster_endpoint_public_access  = true
 
-    vpc_id = module.myapp-vpc.vpc_id
-    subnet_ids = module.myapp-vpc.private_subnets
+    vpc_id = data.aws_vpc.vpcfetch.id
+    subnet_ids = [data.aws_subnet.subnet.id,data.aws_subnet.subnet2.id]
 
     tags = {
         environment = "development"
