@@ -30,24 +30,24 @@ pipeline{
         //        }        
         //     }
         // }
-        stage('Approval') {
-            input {
-                message 'Do you want to proceed with the next stage?'
-                ok 'Proceed'
-                submitter 'sukhanthwhitehat@gmail.com' // Add the email addresses of your approvers here
-            }
-            steps {
-                script{
-                   dir("EKSTerraform"){
-                   sh "terraform apply --auto-approve"
-                   }
-               }  
-            }
-        }
+        // stage('Approval') {
+        //     input {
+        //         message 'Do you want to proceed with the next stage?'
+        //         ok 'Proceed'
+        //         submitter 'sukhanthwhitehat@gmail.com' // Add the email addresses of your approvers here
+        //     }
+        //     steps {
+        //         script{
+        //            dir("EKSTerraform"){
+        //            sh "terraform apply --auto-approve"
+        //            }
+        //        }  
+        //     }
+        // }
         stage("Deploy to EKS"){
             steps{
                 script{
-                    sh "aws eks update-kubeconfig --name suki-tf-cluster"
+                    sh "aws eks update-kubeconfig --name suki-tf-cluster2"
                     sh "kubectl apply -f ${DEPLOYMENT_YAML_FILE}"
                     sh "kubectl apply -f ${SERVICE_YAML_FILE}"
                 }
